@@ -12,17 +12,27 @@ const Chart = () => {
             // const dailyData = await fetchDailyData();
             setDailyData(await fetchDailyData())
         }
-        console.log(dailyData)
         fetchAPI();
     });
 
     const lineChart = (
-        dailyData[0]
+        dailyData.length
         ? (
             <Line
             data={{
-                labels: '',
-                datasets: [{}, {}],
+                labels: dailyData.map(({ date }) => date),
+                datasets: [{
+                    data: dailyData.map(({ confirmed }) => confirmed),
+                    label: 'Infected',
+                    borderColor: '#3333FF',
+                    fill: true, 
+                }, {
+                    data: dailyData.map(({ deaths }) => deaths),
+                    label: 'Deaths',
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255, 0, 0, 0.5',
+                    fill: true, 
+                }],
             }}
             />) : null
         
@@ -30,7 +40,9 @@ const Chart = () => {
     );
 
     return (
-        <h1>Chart</h1>
+        <div className={styles.container}>
+            {lineChart}
+        </div>
     )
 }
 
